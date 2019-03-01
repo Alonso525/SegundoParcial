@@ -1,6 +1,6 @@
 <?php
 require_once '../includes/_db.php';
-require_once '../includes/_funcionessvc.php';
+require_once '../includes/_meet.php';
 ?>
 <!doctype html>
 <html lang="en">
@@ -61,29 +61,29 @@ require_once '../includes/_funcionessvc.php';
 
       <main id="main" role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
 
-        <h2>Servicios
+        <h2>Crew
           <button type="button" id="btn_nuevo" class="btn btn-outline-primary">Nuevo</button>
         </h2>
         <div class="table-responsive view" id="mostrar_datos">
           <table class="table table-striped table-sm" id="table_datos">
             <thead>
               <tr>
-                <th>Servicios</th>
+                <th>Crew</th>
                 <th>Descripcion</th>
                 <th>Accion</th>
               </tr>
             </thead>
             <tbody>
               <?php
-              $servicios = $db->select("servicios","*",["status_svc" => 1]);
-              foreach ($servicios as $servicios => $usr) {
+              $crew = $db->select("crew","*",["status_cr" => 1]);
+              foreach ($crew as $crew => $usr) {
                 ?>
                 <tr>
-                  <td><?php echo $usr["nombre_svc"]; ?></td>
-                  <td><?php echo $usr["descripcion_svc"]; ?></td>
+                  <td><?php echo $usr["nombre_cr"]; ?></td>
+                  <td><?php echo $usr["descripcion_cr"]; ?></td>
                   <td>
-                    <a href="#" class=""data-id="<?php echo $usr["id_svc"]; ?>">Editar</a>
-                    <a href="#" class="eliminar_registro" data-id="<?php echo $usr["id_svc"]; ?>">Eliminar</a></td>
+                    <a href="#" class=""data-id="<?php echo $usr["id_cr"]; ?>">Editar</a>
+                    <a href="#" class="eliminar_registro" data-id="<?php echo $usr["id_cr"]; ?>">Eliminar</a></td>
                   </tr>
                   <?php
                 }
@@ -143,14 +143,14 @@ require_once '../includes/_funcionessvc.php';
       });
       $("#registrar").click(function(){
 
-          let nombre=$("#nombre").val();
+        let nombre=$("#nombre").val();
         let descripcion=$("#descripcion").val();
         let foto=$("#foto").val();
         let obj = {
-          "accion" : "insertar_servicios",
-            "nombre" : nombre,
-            "descripcion" : descripcion,
-            "foto" : foto
+          "accion" : "insertar_crew",
+          "nombre" : nombre,
+          "descripcion" : descripcion,
+          "foto" : foto
         };
 
         $("#frm_datos").find("input").keyup(function(){
@@ -171,13 +171,11 @@ require_once '../includes/_funcionessvc.php';
               alert("Por favor no dejes campos vacios");
 
           }else{
-              $.post("../includes/_funcionessvc.php", obj, function(data){
-              mostrar_servicios();
+              $.post("../includes/_crew.php", obj, function(data){
+              mostrar_crew();
               });
               alert("Registro exitoso");
               $("#frm_datos")[0].reset();
-
-
           }
 
       });
@@ -185,28 +183,28 @@ require_once '../includes/_funcionessvc.php';
         e.preventDefault();
         let id = $(this).data('id');
         let obj = {
-          "accion" : "eliminar_servicios",
+          "accion" : "eliminar_crew",
           "servicios" : id
         }
-        $.post("../includes/_funcionessvc.php",obj, function(data){
-          mostrar_servicios();
+        $.post("../includes/_crew.php",obj, function(data){
+          mostrar_crew();
         });
       });
-      function mostrar_servicios(){
+      function mostrar_crew(){
         let obj = {
-          "accion" : "mostrar_servicios"
+          "accion" : "mostrar_crew"
         }
 
-        $.post("../includes/_funcionessvc.php",obj, function(data){
+        $.post("../includes/_crew.php",obj, function(data){
           let template = ``;
           $.each(data, function(e,elem){
             template += `
             <tr>
-            <td>${elem.nombre_svc}</td>
-            <td>${elem.descripcion_svc}</td>
+            <td>${elem.nombre_crew}</td>
+            <td>${elem.descripcion_crew}</td>
             <td>
-            <a href="#" class=""data-id="${elem.id_svc}">Editar</a>
-            <a href="#" class="eliminar_registro" data-id="${elem.id_svc}">Eliminar</a></td>
+            <a href="#" class=""data-id="${elem.id_crew}">Editar</a>
+            <a href="#" class="eliminar_registro" data-id="${elem.id_crew}">Eliminar</a></td>
             </tr>
             `;
           });

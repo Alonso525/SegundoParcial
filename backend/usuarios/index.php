@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once '../includes/_db.php';
 require_once '../includes/_funciones.php';
 ?>
@@ -33,7 +33,7 @@ require_once '../includes/_funciones.php';
             <li class="nav-item">
               <a class="nav-link" href="#">
                 <span data-feather="home"></span>
-                Dashboard 
+                Dashboard
               </a>
             </li>
             <li class="nav-item">
@@ -44,6 +44,12 @@ require_once '../includes/_funciones.php';
             </li>
             <li class="nav-item">
               <a class="nav-link" href="../servicios/">
+                <span data-feather="file"></span>
+                Servicios<span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="../crew/">
                 <span data-feather="file"></span>
                 Servicios<span class="sr-only">(current)</span>
               </a>
@@ -68,7 +74,7 @@ require_once '../includes/_funciones.php';
               </tr>
             </thead>
             <tbody>
-              <?php 
+              <?php
               $usuarios = $db->select("usuarios","*",["status_usr" => 1]);
               foreach ($usuarios as $usuario => $usr) {
                 ?>
@@ -141,7 +147,7 @@ require_once '../includes/_funciones.php';
                 <div class="col">
                   <button type="button" class="btn btn-outline-danger cancelar">Cancelar</button>
                   <button type="button" class="btn btn-outline-success" id="registrar">Guardar</button>
-                  
+
                 </div>
               </div>
             </form>
@@ -151,7 +157,7 @@ require_once '../includes/_funciones.php';
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
-                
+
       change_view();
       function change_view(vista = "mostrar_datos"){
         $("#main").find(".view").each(function(){
@@ -170,7 +176,7 @@ require_once '../includes/_funciones.php';
         change_view();
       });
       $("#registrar").click(function(){
-          
+
           let nombre=$("#nombre").val();
         let correo=$("#correo").val();
         let trabajo=$("#trabajo").val();
@@ -196,7 +202,7 @@ require_once '../includes/_funciones.php';
             "facebook" : facebook,
             "telefono" : telefono
         };
-          
+
         $("#frm_datos").find("input").keyup(function(){
           $(this).removeClass("error");
         });
@@ -208,22 +214,22 @@ require_once '../includes/_funciones.php';
           }else{
             obj[$(this).prop("name")] = $(this).val();
           }
-          
+
         });
-          
+
           if(nombre.length==0 || correo.length==0 || trabajo.length==0 || descripcion.length==0 || foto.length==0 || tipo.length==0 || password.length==0 || twitter.length==0 || linkedin.length==0 ||facebook.length==0 || telefono.length==0){
               alert("Por favor no dejes campos vacios");
-              
+
           }else{
               $.post("../includes/_funciones.php", obj, function(data){
               mostrar_usuarios();
               });
               alert("Registro exitoso");
               $("#frm_datos")[0].reset();
-              
+
 
           }
-          
+
       });
       $("#main").find(".eliminar_registro").click(function(e){
         e.preventDefault();
@@ -240,9 +246,9 @@ require_once '../includes/_funciones.php';
         let obj = {
           "accion" : "mostrar_usuarios"
         }
-        
+
         $.post("../includes/_funciones.php",obj, function(data){
-          let template = ``; 
+          let template = ``;
           $.each(data, function(e,elem){
             template += `
             <tr>
@@ -255,7 +261,7 @@ require_once '../includes/_funciones.php';
             `;
           });
           $("#table_datos tbody").html(template);
-        },"JSON");      
+        },"JSON");
       }
     </script>
     </html>
